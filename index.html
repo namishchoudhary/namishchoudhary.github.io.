@@ -4,31 +4,90 @@
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>AR Gate Visualizer</title>
+
     <script
       type="module"
       src="https://ajax.googleapis.com/ajax/libs/model-viewer/3.3.0/model-viewer.min.js"
     ></script>
+
     <style>
-      body {
-        margin: 0;
-        font-family: sans-serif;
+      :root {
+        --brand-color: #007bff;
       }
+
+      body,
+      html {
+        margin: 0;
+        padding: 0;
+        width: 100%;
+        height: 100%;
+        overflow: hidden; /* Prevents the page from scrolling when moving the gate */
+        font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
+      }
+
+      /* The AR Container */
       model-viewer {
         width: 100%;
-        height: 90vh; /* Takes up most of the screen */
-        background-color: #f0f0f0;
+        height: 100vh;
+        background-color: #e5e5e5;
+        --poster-color: transparent;
       }
-      .header {
-        padding: 10px;
-        text-align: center;
-        background: #333;
+
+      /* Branding Overlay */
+      .overlay {
+        position: absolute;
+        top: 20px;
+        left: 20px;
+        pointer-events: none; /* Allows clicks to pass through to the model */
+      }
+
+      .overlay h1 {
+        margin: 0;
+        font-size: 24px;
+        color: #333;
+        text-shadow: 0px 2px 4px rgba(255, 255, 255, 0.8);
+      }
+
+      /* Custom AR Button */
+      #ar-button {
+        background-color: var(--brand-color);
+        border-radius: 30px;
+        padding: 12px 24px;
+        position: absolute;
+        bottom: 40px;
+        left: 50%;
+        transform: translateX(-50%);
+        border: none;
         color: white;
+        font-weight: bold;
+        font-size: 16px;
+        box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
+        cursor: pointer;
+        display: flex;
+        align-items: center;
+        gap: 10px;
+      }
+
+      #ar-button:active {
+        background-color: #0056b3;
+      }
+
+      /* Instruction text for users */
+      .controls-hint {
+        position: absolute;
+        bottom: 100px;
+        width: 100%;
+        text-align: center;
+        color: #555;
+        font-size: 14px;
+        pointer-events: none;
       }
     </style>
   </head>
   <body>
-    <div class="header">
-      <h1>Visualizer: Premium Gate</h1>
+    <div class="overlay">
+      <h1>Gate Visualizer Pro</h1>
+      <p>Model: Ornamental Iron Gate</p>
     </div>
 
     <model-viewer
@@ -37,12 +96,19 @@
       ar-modes="webxr scene-viewer quick-look"
       ar-placement="floor"
       camera-controls
-      touch-action="pan-y"
-      shadow-intensity="1"
+      touch-action="none"
+      shadow-intensity="1.5"
+      shadow-softness="1"
       ar-scale="auto"
-      interaction-prompt="auto"
+      bounds="tight"
+      exposure="1"
+      environment-image="neutral"
     >
-      <button slot="ar-button" id="ar-button">👋 View in your Space</button>
+      <button slot="ar-button" id="ar-button">View in Your Space 🏠</button>
+
+      <div class="controls-hint">
+        Use 1 finger to rotate | 2 fingers to move & scale
+      </div>
     </model-viewer>
   </body>
 </html>
