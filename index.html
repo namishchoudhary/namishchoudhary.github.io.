@@ -98,16 +98,14 @@
       camera-controls
       touch-action="none"
       shadow-intensity="1.5"
-      shadow-softness="1"
       ar-scale="auto"
       bounds="tight"
-      exposure="1"
-      environment-image="neutral"
+      enable-pan /* This helps separate dragging from rotating */
     >
-      <button slot="ar-button" id="ar-button">View in Your Space 🏠</button>
+      <button slot="ar-button" id="ar-button">Place on Door 🏠</button>
 
       <div class="controls-hint">
-        Use 1 finger to rotate | 2 fingers to move & scale
+        Tap & Drag to Rotate | Use 2 Fingers to Slide on Wall
       </div>
     </model-viewer>
   </body>
