@@ -35,25 +35,14 @@
       src="gate_model.glb"
       ar
       ar-modes="webxr scene-viewer quick-look"
+      ar-placement="floor"
       camera-controls
-      poster="poster.webp"
+      touch-action="pan-y"
       shadow-intensity="1"
-      auto-rotate
+      ar-scale="auto"
+      interaction-prompt="auto"
     >
-      <button
-        slot="ar-button"
-        style="
-          background-color: white;
-          border-radius: 4px;
-          border: none;
-          position: absolute;
-          top: 16px;
-          right: 16px;
-          padding: 10px;
-        "
-      >
-        👋 View in your Space
-      </button>
+      <button slot="ar-button" id="ar-button">👋 View in your Space</button>
     </model-viewer>
   </body>
 </html>
