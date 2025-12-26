@@ -82,6 +82,24 @@
         font-size: 14px;
         pointer-events: none;
       }
+      .controls {
+        position: absolute;
+        bottom: 150px;
+        left: 50%;
+        transform: translateX(-50%);
+        background: rgba(255, 255, 255, 0.8);
+        padding: 15px;
+        border-radius: 10px;
+        display: flex;
+        flex-direction: column;
+        gap: 10px;
+        width: 80%;
+      }
+      .controls label {
+        font-size: 12px;
+        font-weight: bold;
+        color: #333;
+      }
     </style>
   </head>
   <body>
@@ -91,22 +109,47 @@
     </div>
 
     <model-viewer
+      id="gate-model"
       src="gate_model.glb"
       ar
       ar-modes="webxr scene-viewer quick-look"
       ar-placement="wall"
       camera-controls
       touch-action="none"
-      shadow-intensity="1.5"
-      ar-scale="auto"
-      bounds="tight"
-      enable-pan /* This helps separate dragging from rotating */
     >
-      <button slot="ar-button" id="ar-button">Place on Door 🏠</button>
+      <div class="controls">
+        <label>Adjust Width</label>
+        <input type="range" id="width" min="0.5" max="3" step="0.1" value="1" />
 
-      <div class="controls-hint">
-        Tap & Drag to Rotate | Use 2 Fingers to Zoom
+        <label>Adjust Height</label>
+        <input
+          type="range"
+          id="height"
+          min="0.5"
+          max="3"
+          step="0.1"
+          value="1"
+        />
       </div>
+
+      <button slot="ar-button" id="ar-button">Place on Door 🏠</button>
     </model-viewer>
+
+    <script>
+      const modelViewer = document.querySelector("#gate-model");
+      const widthSlider = document.querySelector("#width");
+      const heightSlider = document.querySelector("#height");
+
+      // Function to update the scale
+      const updateScale = () => {
+        const x = widthSlider.value;
+        const y = heightSlider.value;
+        const z = 1; // Keep depth the same
+        modelViewer.scale = `${x} ${y} ${z}`;
+      };
+
+      widthSlider.addEventListener("input", updateScale);
+      heightSlider.addEventListener("input", updateScale);
+    </script>
   </body>
 </html>
