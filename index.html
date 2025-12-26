@@ -3,67 +3,56 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>AR Gate Pro Visualizer</title>
+    <title>AR Gate Visualizer</title>
+
     <script
       type="module"
       src="https://ajax.googleapis.com/ajax/libs/model-viewer/3.3.0/model-viewer.min.js"
     ></script>
 
     <style>
+      :root {
+        --brand-color: #007bff;
+      }
+
       body,
       html {
         margin: 0;
         padding: 0;
         width: 100%;
         height: 100%;
-        overflow: hidden;
-        font-family: sans-serif;
+        overflow: hidden; /* Prevents the page from scrolling when moving the gate */
+        font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
       }
 
+      /* The AR Container */
       model-viewer {
         width: 100%;
         height: 100vh;
-        background-color: #f4f4f4;
+        background-color: #e5e5e5;
         --poster-color: transparent;
       }
 
-      /* Control Panel for Width/Height */
-      .control-panel {
+      /* Branding Overlay */
+      .overlay {
         position: absolute;
-        bottom: 140px;
-        left: 50%;
-        transform: translateX(-50%);
-        background: rgba(255, 255, 255, 0.9);
-        padding: 15px;
-        border-radius: 15px;
-        width: 85%;
-        box-shadow: 0 4px 20px rgba(0, 0, 0, 0.2);
-        display: flex;
-        flex-direction: column;
-        gap: 10px;
-        z-index: 10;
+        top: 20px;
+        left: 20px;
+        pointer-events: none; /* Allows clicks to pass through to the model */
       }
 
-      .slider-group {
-        display: flex;
-        align-items: center;
-        gap: 10px;
-      }
-      .slider-group label {
-        flex: 1;
-        font-size: 13px;
-        font-weight: bold;
+      .overlay h1 {
+        margin: 0;
+        font-size: 24px;
         color: #333;
-      }
-      .slider-group input {
-        flex: 2;
-        cursor: pointer;
+        text-shadow: 0px 2px 4px rgba(255, 255, 255, 0.8);
       }
 
+      /* Custom AR Button */
       #ar-button {
-        background-color: #007bff;
+        background-color: var(--brand-color);
         border-radius: 30px;
-        padding: 15px 30px;
+        padding: 12px 24px;
         position: absolute;
         bottom: 40px;
         left: 50%;
@@ -71,77 +60,54 @@
         border: none;
         color: white;
         font-weight: bold;
-        box-shadow: 0 4px 10px rgba(0, 0, 0, 0.3);
+        font-size: 16px;
+        box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
+        cursor: pointer;
+        display: flex;
+        align-items: center;
+        gap: 10px;
       }
 
-      .hint {
+      #ar-button:active {
+        background-color: #0056b3;
+      }
+
+      /* Instruction text for users */
+      .controls-hint {
         position: absolute;
-        top: 20px;
+        bottom: 100px;
         width: 100%;
         text-align: center;
-        color: #444;
+        color: #555;
         font-size: 14px;
         pointer-events: none;
-        background: rgba(255, 255, 255, 0.6);
       }
+      
     </style>
   </head>
   <body>
-    <div class="hint">Point at a door frame to align the gate</div>
+    <div class="overlay">
+      <h1>Gate Visualizer Pro</h1>
+      <p>Model: Ornamental Iron Gate</p>
+    </div>
 
     <model-viewer
-      id="gate"
       src="gate_model.glb"
       ar
       ar-modes="webxr scene-viewer quick-look"
       ar-placement="wall"
       camera-controls
       touch-action="none"
-      shadow-intensity="0.5"
-      shadow-softness="0"
-      powerPreference="high-performance"
+      shadow-intensity="1.5"
+      ar-scale="auto"
       bounds="tight"
+      enable-pan /* This helps separate dragging from rotating */
     >
-      <div class="control-panel">
-        <div class="slider-group">
-          <label>Width</label>
-          <input
-            type="range"
-            id="width"
-            min="0.1"
-            max="4"
-            step="0.05"
-            value="1"
-          />
-        </div>
-        <div class="slider-group">
-          <label>Height</label>
-          <input
-            type="range"
-            id="height"
-            min="0.1"
-            max="4"
-            step="0.05"
-            value="1"
-          />
-        </div>
+      <button slot="ar-button" id="ar-button">Place on Door 🏠</button>
+
+      <div class="controls-hint">
+        Tap & Drag to Rotate | Use 2 Fingers to Zoom
       </div>
-
-      <button slot="ar-button" id="ar-button">VIEW IN YOUR DOORWAY 🏠</button>
     </model-viewer>
-
-    <script>
-      const gate = document.querySelector("#gate");
-      const wSlider = document.querySelector("#width");
-      const hSlider = document.querySelector("#height");
-
-      const updateGateSize = () => {
-        // Apply non-uniform scaling (Width, Height, Depth)
-        gate.scale = `${wSlider.value} ${hSlider.value} 1`;
-      };
-
-      wSlider.addEventListener("input", updateGateSize);
-      hSlider.addEventListener("input", updateGateSize);
-    </script>
   </body>
 </html>
